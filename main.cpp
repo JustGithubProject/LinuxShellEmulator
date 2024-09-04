@@ -48,13 +48,21 @@ public:
                 system(formatStrCommand.c_str());
             }
 
-            if (command.rfind("mkdir", 0) == 0) {
+            if (command.rfind("rm", 0) == 0) {
                 std::vector<std::string> words = splitStringBySpace(command);
                 int wordsSize = words.size();
-                std::ostringstream commandToCreateFolder;
-                commandToCreateFolder << "mkdir " << "shell-folder/" << words[wordsSize - 1];
-                std::string formatStrCommand = commandToCreateFolder.str();
-                system(formatStrCommand.c_str());
+
+                if (words.size() == 2) {
+                    std::ostringstream commandToDeleteFile;
+                    commandToDeleteFile << "rm " << "shell-folder/" << words[wordsSize - 1];
+                    std::string formatStrCommand = commandToDeleteFile.str();
+                    system(formatStrCommand.c_str());
+                } else if (words.size() == 3 && words[1] == "-r") {
+                    std::ostringstream commandToDeleteFolder;
+                    commandToDeleteFolder << "rm " << "-r " << "shell-folder/" << words[wordsSize - 1];
+                    std::string formatStrCommand = commandToDeleteFolder.str();
+                    system(formatStrCommand.c_str());
+                }
             }
 
             if (command == "pwd") {
